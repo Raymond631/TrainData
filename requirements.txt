@@ -1,0 +1,4 @@
+fake-useragent
+networkx
+pandas
+requests

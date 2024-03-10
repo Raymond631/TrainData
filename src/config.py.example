@@ -1,0 +1,10 @@
+# 数据库设置
+db_path = "../resource/train.db"
+# 邮件设置
+email_host = "smtp.163.com"
+email_port = 465
+account = 'xxxxx@163.com'
+receiver = ['xxxxx@qq.com']
+password = 'xxxxxx'
+# 12306 Cookie
+Cookie = 'JSESSIONID=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
