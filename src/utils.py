@@ -5,7 +5,7 @@ from email.mime.text import MIMEText
 
 import pandas as pd
 
-from src.config import db_path, account, password, receiver, email_host, email_port
+from config import db_path, account, password, receiver, email_host, email_port
 
 
 def sql_select_all(sql):

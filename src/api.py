@@ -1,7 +1,7 @@
 import requests
 from fake_useragent import UserAgent
 
-from src.config import Cookie
+from config import Cookie
 
 # 随机UserAgent池
 ua = UserAgent()
@@ -32,7 +32,7 @@ def get_station_telecode():
 
 # 查询余票（含票价）
 def get_remain_ticket(from_station_code, to_station_code, train_date):
-    url = f"https://kyfw.12306.cn/otn/leftTicket/queryE"
+    url = f"https://kyfw.12306.cn/otn/leftTicket/query"
     params = {
         'leftTicketDTO.train_date': train_date,
         'leftTicketDTO.from_station': from_station_code,

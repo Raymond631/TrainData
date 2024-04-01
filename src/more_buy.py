@@ -1,9 +1,9 @@
 import re
 import time
 
-from src import api
-from src.price import get_price_yp
-from src.utils import send_email
+import api
+from price import get_price_yp
+from utils import send_email
 
 
 def get_station_code():
@@ -53,6 +53,7 @@ def search(from_station_code, to_station_code, train_code, reversed_dict, seat, 
             ticket, price = getTicketAndPrice(train, seat)
             if train[3] == train_code and ticket not in ('', '无', '*'):
                 return {
+                    'train_date': train_date,
                     'train_code': train_code,
                     'from_station': reversed_dict[from_station_code],
                     'to_station': reversed_dict[to_station_code],
@@ -78,22 +79,24 @@ def query(from_station, to_station, train_code, station_code, reversed_dict, sea
             res = search(station_code[f], station_code[t], train_code, reversed_dict, seat, train_date)
             if res:
                 result.append(res)
+            # print(f, t, res)
             time.sleep(1)
 
 
-def run(train_code_list, from_station, to_station, seat):
+def run(train_date_list, train_code_list, from_station, to_station, seat):
     now = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     print(f"{now} | 开始查询")
 
     result = []
     station_code, reversed_dict = get_station_code()
-    for train_code in train_code_list:
-        # 查询上车站、下车站的序号，用于下面的截取
-        train_no, from_station_no, to_station_no = search_init(station_code[from_station], station_code[to_station], train_code, train_date)
-        # 获取途径站，截取两头
-        from_station_list, to_station_list = get_station(train_no, station_code[from_station], station_code[to_station], int(from_station_no), int(to_station_no), train_date)
-        # 遍历查询多买方案
-        query(from_station_list, to_station_list, train_code, station_code, reversed_dict, seat, train_date, result)
+    for train_date in train_date_list:
+        for train_code in train_code_list:
+            # 查询上车站、下车站的序号，用于下面的截取
+            train_no, from_station_no, to_station_no = search_init(station_code[from_station], station_code[to_station], train_code, train_date)
+            # 获取途径站，截取两头
+            from_station_list, to_station_list = get_station(train_no, station_code[from_station], station_code[to_station], int(from_station_no), int(to_station_no), train_date)
+            # 遍历查询多买方案
+            query(from_station_list, to_station_list, train_code, station_code, reversed_dict, seat, train_date, result)
 
     now = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     if len(result) > 0:
@@ -105,10 +108,10 @@ def run(train_code_list, from_station, to_station, seat):
 
 
 if __name__ == '__main__':
-    train_date = '2024-01-29'
-    from_station = '金华'
-    to_station = '永州'
+    train_date_list = ['2024-04-02', '2024-04-03']
+    from_station = '北京'
+    to_station = '上海'
     seat = '硬座'
-    train_code_list = ['T81', 'T381', 'K575', 'K149']
+    train_code_list = ['T109', '1461']
     # 启动
-    run(train_code_list, from_station, to_station, seat)
+    run(train_date_list, train_code_list, from_station, to_station, seat)

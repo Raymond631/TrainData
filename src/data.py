@@ -1,9 +1,10 @@
 import random
 import time
 
-from src import api, utils
-from src.more_buy import get_station_code
-from src.price import get_price_public
+import api
+import utils
+from more_buy import get_station_code
+from price import get_price_public
 
 
 def get_train_name():
